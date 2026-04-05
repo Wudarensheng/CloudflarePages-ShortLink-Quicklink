@@ -8,8 +8,8 @@
 
 ```bash
 # 克隆到本地
-git clone https://github.com/yourusername/shortlink.git
-cd shortlink
+git clone https://github.com/Wudarensheng/CloudflarePages-ShortLink-QuickLink.git
+cd CloudflarePages-ShortLink-QuickLink
 ```
 
 ### 2. 配置你的短链
@@ -80,26 +80,31 @@ node build.js
 
 ```json
 {
-  "/umami": {
+  "/choose": {
     "type": "choice",
-    "title": "选择 Umami 统计平台",
+    "title": "选择",
     "options": [
       {
-        "label": "官方 Umami",
-        "description": "cloud.umami.is",
-        "url": "https://cloud.umami.is/share/xxx"
+        "label": "Link 1",
+        "description": "Describe 1",
+        "url": "https://example.com"
       },
       {
-        "label": "自建 Umami",
-        "description": "umami.yourdomain.com",
-        "url": "https://umami.yourdomain.com/share/xxx"
+        "label": "Link 2",
+        "description": "Describe 2",
+        "url": "https://example.net"
+      },
+      {
+        "label": "Link 3",
+        "description": "Describe 3",
+        "url": "https://example.org"
       }
     ]
   }
 }
 ```
 
-访问 `go.yourdomain.com/umami` 会显示一个美观的选择界面。
+访问 `go.yourdomain.com/choose` 会显示一个美观的选择界面。
 
 ## 🎨 自定义样式
 
@@ -199,4 +204,4 @@ A: 不支持。这是纯静态方案，所有短链必须预先在 `links.json` 
 
 ## 📄 许可证
 
-MIT
+GPLv3
