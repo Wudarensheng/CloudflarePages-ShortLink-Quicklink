@@ -203,6 +203,137 @@ function generateChoicePage(config) {
 </html>`;
 }
 
+// 生成所有短链列表页面
+function generateAllPage(links) {
+  const linksList = Object.entries(links).map(([path, target]) => {
+    let displayUrl;
+    let type = 'redirect';
+    
+    if (typeof target === 'object' && target.type === 'choice') {
+      displayUrl = `选择页面: ${target.title}`;
+      type = 'choice';
+    } else {
+      displayUrl = target;
+    }
+    
+    return `
+      <div class="link-item">
+        <a href="${path}" class="link-path">${path}</a>
+        <span class="link-target">${displayUrl}</span>
+        ${type === 'choice' ? '<span class="badge">选择</span>' : ''}
+      </div>`;
+  }).join('\n');
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>所有短链</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background: #f8f9fa;
+      color: #333;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #222;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.95rem;
+    }
+    .link-list {
+      background: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .link-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #f0f0f0;
+      gap: 1rem;
+      transition: background 0.2s;
+    }
+    .link-item:last-child {
+      border-bottom: none;
+    }
+    .link-item:hover {
+      background: #fafafa;
+    }
+    .link-path {
+      min-width: 120px;
+      padding: 0.4rem 0.8rem;
+      background: #333;
+      color: #fff;
+      border-radius: 0.4rem;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .link-path:hover {
+      background: #555;
+    }
+    .link-target {
+      flex: 1;
+      color: #666;
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+    .badge {
+      padding: 0.2rem 0.6rem;
+      background: #e3f2fd;
+      color: #1976d2;
+      border-radius: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+      padding: 0.5rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .back-link:hover {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>所有短链</h1>
+      <p class="subtitle">共 ${Object.keys(links).length} 个短链</p>
+    </header>
+    <div class="link-list">
+      ${linksList}
+    </div>
+    <a href="https://yourblog.example.com" class="back-link">← 回到博客</a>
+  </div>
+</body>
+</html>`;
+}
+
 // 生成所有短链页面
 console.log('开始生成静态页面...');
 
@@ -229,6 +360,13 @@ Object.entries(links).forEach(([shortPath, target]) => {
   const htmlFilePath = path.join(targetDir, 'index.html');
   fs.writeFileSync(htmlFilePath, htmlContent, 'utf-8');
 });
+
+// 生成 /all 页面列出所有短链
+const allPageHtml = generateAllPage(links);
+const allDir = path.join(outputDir, 'all');
+fs.mkdirSync(allDir, { recursive: true });
+fs.writeFileSync(path.join(allDir, 'index.html'), allPageHtml, 'utf-8');
+console.log('✓ 生成: /all/index.html -> 所有短链列表');
 
 // 生成自定义404页面（Cloudflare Pages会使用404.html）
 const notFoundHtml = generate404Page('/不存在的短链');

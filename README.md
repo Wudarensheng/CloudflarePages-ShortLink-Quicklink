@@ -8,8 +8,8 @@
 
 ```bash
 # 克隆到本地
-git clone https://github.com/Wudarensheng/CloudflarePages-ShortLink-QuickLink.git
-cd CloudflarePages-ShortLink-QuickLink
+git clone https://github.com/yourusername/shortlink.git
+cd shortlink
 ```
 
 ### 2. 配置你的短链
@@ -80,31 +80,26 @@ node build.js
 
 ```json
 {
-  "/choose": {
+  "/umami": {
     "type": "choice",
-    "title": "选择",
+    "title": "选择 Umami 统计平台",
     "options": [
       {
-        "label": "Link 1",
-        "description": "Describe 1",
-        "url": "https://example.com"
+        "label": "官方 Umami",
+        "description": "cloud.umami.is",
+        "url": "https://cloud.umami.is/share/xxx"
       },
       {
-        "label": "Link 2",
-        "description": "Describe 2",
-        "url": "https://example.net"
-      },
-      {
-        "label": "Link 3",
-        "description": "Describe 3",
-        "url": "https://example.org"
+        "label": "自建 Umami",
+        "description": "umami.yourdomain.com",
+        "url": "https://umami.yourdomain.com/share/xxx"
       }
     ]
   }
 }
 ```
 
-访问 `go.yourdomain.com/choose` 会显示一个美观的选择界面。
+访问 `go.yourdomain.com/umami` 会显示一个美观的选择界面。
 
 ## 🎨 自定义样式
 
@@ -159,6 +154,7 @@ shortlink/
 - ✅ **全球 CDN**：Cloudflare 全球节点加速
 - ✅ **极速响应**：直接返回静态文件，比 Function 快 10-50ms
 - ✅ **选择页面**：支持一个短链提供多个选项
+- ✅ **短链列表**：自动在 `/all` 生成所有短链的列表页面
 - ✅ **易于维护**：只需修改一个 JSON 文件
 - ✅ **SEO 友好**：使用 meta refresh 和 JS 双重跳转
 
@@ -204,4 +200,4 @@ A: 不支持。这是纯静态方案，所有短链必须预先在 `links.json` 
 
 ## 📄 许可证
 
-GPLv3
+MIT
